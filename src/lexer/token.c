@@ -12,103 +12,103 @@
 #include "../util.h"
 #include "token.h"
 
-// Retorna uma string de um TOKEN
-const char *TokenGetString(TokenType type) {
+// Retorna uma string de um TOK
+const char *token_get_string(token_type_t type) {
 	switch (type) {
-	case TOKEN_FLOAT:
+	case TOK_FLOAT:
 		return "FLOAT";
-	case TOKEN_INTEGER:
+	case TOK_INTEGER:
 		return "INTEGER";
-	case TOKEN_STRING:
+	case TOK_STRING:
 		return "STRING";
-	case TOKEN_IDENTIFIER:
+	case TOK_IDENTIFIER:
 		return "IDENTIFIER";
-	case TOKEN_SEMICOLON:
+	case TOK_SEMICOLON:
 		return ";";
-	case TOKEN_COMMA:
+	case TOK_COMMA:
 		return ",";
-	case TOKEN_DOT:
+	case TOK_DOT:
 		return ".";
-	case TOKEN_EQUAL:
+	case TOK_EQUAL:
 		return "=";
-	case TOKEN_PLUS:
+	case TOK_PLUS:
 		return "+";
-	case TOKEN_MINUS:
+	case TOK_MINUS:
 		return "-";
-	case TOKEN_ASTERISK:
+	case TOK_ASTERISK:
 		return "*";
-	case TOKEN_SLASH:
+	case TOK_SLASH:
 		return "/";
-	case TOKEN_PERCENT:
+	case TOK_PERCENT:
 		return "%";
-	case TOKEN_BITWISE_OR:
+	case TOK_BITWISE_OR:
 		return "|";
-	case TOKEN_BITWISE_XOR:
+	case TOK_BITWISE_XOR:
 		return "^";
-	case TOKEN_BITWISE_AND:
+	case TOK_BITWISE_AND:
 		return "&";
-	case TOKEN_BITWISE_SHIFT_LEFT:
+	case TOK_BITWISE_SHIFT_LEFT:
 		return "<<";
-	case TOKEN_BITWISE_SHIFT_RIGHT:
+	case TOK_BITWISE_SHIFT_RIGHT:
 		return ">>";
-	case TOKEN_EQUAL_EQUAL:
+	case TOK_EQUAL_EQUAL:
 		return "==";
-	case TOKEN_NOT_EQUAL:
+	case TOK_NOT_EQUAL:
 		return "!=";
-	case TOKEN_LESS_THAN:
+	case TOK_LESS_THAN:
 		return "<";
-	case TOKEN_GREATER_THAN:
+	case TOK_GREATER_THAN:
 		return ">";
-	case TOKEN_LESS_OR_EQUAL:
+	case TOK_LESS_OR_EQUAL:
 		return "<=";
-	case TOKEN_GREATER_OR_EQUAL:
+	case TOK_GREATER_OR_EQUAL:
 		return ">=";
-	case TOKEN_AND:
+	case TOK_AND:
 		return "&&";
-	case TOKEN_OR:
+	case TOK_OR:
 		return "||";
-	case TOKEN_LPAREN:
+	case TOK_LPAREN:
 		return "(";
-	case TOKEN_RPAREN:
+	case TOK_RPAREN:
 		return ")";
-	case TOKEN_LBRACE:
+	case TOK_LBRACE:
 		return "{";
-	case TOKEN_RBRACE:
+	case TOK_RBRACE:
 		return "}";
-	case TOKEN_LBRACKET:
+	case TOK_LBRACKET:
 		return "[";
-	case TOKEN_RBRACKET:
+	case TOK_RBRACKET:
 		return "]";
-	case TOKEN_EOF:
+	case TOK_EOF:
 		return "EOF";
 	default:
 		return "UNKNOWN";
 	}
 }
 
-// Cria um novo TokenArray
-TokenArray *TokenArrayCreate(size_t initialCap) {
-	TokenArray *array = (TokenArray *)malloc(sizeof(TokenArray));
+// Cria um novo token_array
+token_array_t *token_array_create(size_t initialCap) {
+	token_array_t *array = (token_array_t *)malloc(sizeof(token_array_t));
 	if (!array)
 		return NULL;
 
 	array->count = 0;
 	array->cap = initialCap;
-	array->tokens = (Token *)malloc(sizeof(Token) * initialCap);
+	array->tokens = (token_t *)malloc(sizeof(token_t) * initialCap);
 
 	return array;
 }
 
-// Adiciona um token a lista do TokenArray
-bool TokenArrayPush(TokenArray *array, Token token) {
+// Adiciona um token a lista do token_array
+bool token_array_push(token_array_t *array, token_t token) {
 	if (!array)
 		return false;
 
 	if (array->count >= array->cap) {
 		size_t newCap = array->cap * 2;
 
-		Token *newTokens =
-			(Token *)realloc(array->tokens, sizeof(Token) * newCap);
+		token_t *newTokens =
+			(token_t *)realloc(array->tokens, sizeof(token_t) * newCap);
 		if (!newTokens)
 			return false;
 
@@ -121,25 +121,25 @@ bool TokenArrayPush(TokenArray *array, Token token) {
 	return true;
 }
 
-// Imprime um TokenArray
-int TokenArrayPrint(TokenArray *array) {
+// Imprime um token_array
+int token_array_print(token_array_t *array) {
 	if (!array)
 		return 1;
 	if (!array->tokens)
 		return 2;
 
 	for (size_t i = 0; i < array->count; i++) {
-		Token token = array->tokens[i];
-		printf("Token %zu: type='%s', lexeme='%.*s', pos=(%zu,%zu)\n", i,
-			   TokenGetString(token.type), (int)token.length, token.start,
+		token_t token = array->tokens[i];
+		printf("token_t %zu: type='%s', lexeme='%.*s', pos=(%zu,%zu)\n", i,
+			   token_get_string(token.type), (int)token.length, token.start,
 			   token.line, token.column);
 	}
 
 	return true;
 }
 
-// Destroi um TokenArray
-void TokenArrayDestroy(TokenArray *array) {
+// Destroi um token_array
+void token_array_destroy(token_array_t *array) {
 	if (!array)
 		return;
 
@@ -148,7 +148,7 @@ void TokenArrayDestroy(TokenArray *array) {
 }
 
 // Aponta pra um erro e mostra ele usando Token
-void tokenError(Token token, const char *format, ...) {
+void token_error(token_t token, const char *format, ...) {
 	printf("\033[31mERROR[%zu:%zu]: ", token.line, token.column);
 
 	va_list args;
@@ -158,7 +158,7 @@ void tokenError(Token token, const char *format, ...) {
 
 	printf("\n");
 
-	pointToWord(token.realContent, token.line - 1, token.column - 1,
+	point_to_word(token.realContent, token.line - 1, token.column - 1,
 				token.length);
 	printf("\033[0m");
 }

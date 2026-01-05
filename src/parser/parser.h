@@ -6,13 +6,13 @@
 #include <stddef.h>
 
 #include "../lexer/token.h"
-#include "node.h"
+#include "ast_node.h"
 
-typedef struct Parser {
+typedef struct parser {
 	size_t pos;
-	TokenArray *tokens;
-} Parser;
+	token_array_t *tokens;
+} parser_t;
 
-Parser *ParserCreate(TokenArray *tokens);
-Node *ParserParse(Parser *parser);
-void ParserDestroy(Parser *parser);
+parser_t *parser_create(token_array_t *tokens);
+ast_node_t *parser_parse(parser_t *parser);
+void parser_destroy(parser_t *parser);

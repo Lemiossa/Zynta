@@ -63,18 +63,18 @@ int runFile(int argc, char **argv) {
 }
 
 int run(char *content, size_t contentSize) {
-	Lexer *lexer = LexerCreate(content, contentSize);
-	TokenArray *tokens = LexerLex(lexer);
+	lexer_t *lexer = lexer_create(content, contentSize);
+	token_array_t *tokens = lexer_lex(lexer);
 #ifdef DEBUG
 	TokenArrayPrint(tokens);
 #endif
-	Parser *parser = ParserCreate(tokens);
+	parser_t *parser = parser_create(tokens);
 
-	Node *ast = ParserParse(parser);
+	ast_node_t *ast = parser_parse(parser);
 	(void)ast;
 
-	ParserDestroy(parser);
-	LexerDestroy(lexer);
+	parser_destroy(parser);
+	lexer_destroy(lexer);
 
 	return 0;
 }

@@ -7,8 +7,8 @@
 #include "../lexer/token.h"
 #include "parser.h"
 
-// Retorna o token atual em um Parser
-Token *ParserPeek(Parser *parser) {
+// Retorna o token atual em um parser_
+token_t *parser_peek(parser_t *parser) {
 	if (!parser)
 		return NULL;
 	if (!parser->tokens || !parser->tokens->tokens)
@@ -17,8 +17,8 @@ Token *ParserPeek(Parser *parser) {
 	return &parser->tokens->tokens[parser->pos];
 }
 
-// Retorna o token atual e incrementa o ponteiro em um Parser
-Token *ParserAdvance(Parser *parser) {
+// Retorna o token atual e incrementa o ponteiro em um parser_
+token_t *parser_advance(parser_t *parser) {
 	if (!parser)
 		return NULL;
 	if (!parser->tokens || !parser->tokens->tokens)
@@ -27,33 +27,33 @@ Token *ParserAdvance(Parser *parser) {
 	return &parser->tokens->tokens[parser->pos++];
 }
 
-// Espera um tipo de token de um Parser, se não encontrado, dá erro
+// Espera um tipo de token de um parser_t, se não encontrado, dá erro
 // Se encontrado, avança
 // Retorna 0 em caso de sucesso e != 0 em caso de erro
-int ParserExpect(Parser *parser, TokenType type) {
+int parser_expect(parser_t *parser, token_type_t type) {
 	if (!parser)
 		return 1;
 
-	Token *token = ParserPeek(parser);
+	token_t *token = parser_peek(parser);
 	if (!token)
 		return 2;
 
 	if (token->type != type) {
-		tokenError(*token, "Syntax error: Expected %s, but found %s\n",
-				   TokenGetString(type), TokenGetString(token->type));
+		token_error(*token, "Syntax error: Expected %s, but found %s\n",
+				   token_get_string(type), token_get_string(token->type));
 		return 3;
 	}
 
-	ParserAdvance(parser);
+	parser_advance(parser);
 	return 0;
 }
 
-// Cria um novo Parser
-Parser *ParserCreate(TokenArray *tokens) {
+// Cria um novo parser_
+parser_t *parser_create(token_array_t *tokens) {
 	if (!tokens)
 		return NULL;
 
-	Parser *parser = (Parser *)malloc(sizeof(Parser));
+	parser_t *parser = (parser_t *)malloc(sizeof(parser_t));
 	if (!parser)
 		return NULL;
 
@@ -64,15 +64,17 @@ Parser *ParserCreate(TokenArray *tokens) {
 }
 
 // Parsea um parser
-Node *ParserParse(Parser *parser) {
+ast_node_t *parser_parse(parser_t *parser) {
 	if (!parser)
 		return NULL;
+
+
 
 	return NULL;
 }
 
-// Destroi um Parser
-void ParserDestroy(Parser *parser) {
+// Destroi um parser_
+void parser_destroy(parser_t *parser) {
 	if (!parser)
 		return;
 

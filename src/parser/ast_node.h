@@ -1,20 +1,20 @@
 /**
- * node.h
+ * ast_node.h
  * Criado por Matheus Leme Da Silva
  */
 #pragma once
 #include <stdbool.h>
 #include <stddef.h>
 
-typedef enum NodeType {
+typedef enum ast_node_type {
 	NODE_LITERAL_INTEGER,
 	NODE_LITERAL_FLOATING,
 	NODE_LITERAL_STRING,
 	NODE_LITERAL_BOOLEAN,
 	NODE_LITERAL_NIL,
-} NodeType;
+} ast_node_type_t;
 
-typedef union NodeData {
+typedef union ast_node_data {
 	// NODE_LITERAL_INTEGER
 	long long integer;
 
@@ -29,9 +29,9 @@ typedef union NodeData {
 
 	// NODE_LITERAL_BOOLEAN
 	bool boolean;
-} NodeData;
+} ast_node_data_t;
 
-typedef struct Node {
-	NodeType type;
-	NodeData data;
-} Node;
+typedef struct ast_node_t {
+	ast_node_type_t type;
+	ast_node_data_t data;
+} ast_node_t;

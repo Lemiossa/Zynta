@@ -5,12 +5,12 @@
 #pragma once
 #include "token.h"
 
-typedef struct Keyword {
+typedef struct keyword {
 	const char *name;
-	TokenType token;
-} Keyword;
+	token_type_t token;
+} keyword_t;
 
-static Keyword keywords[] = {
-	{"and", TOKEN_AND},			  {"or", TOKEN_OR},
-	{"True", TOKEN_KEYWORD_TRUE}, {"False", TOKEN_KEYWORD_FALSE},
-	{"Nil", TOKEN_KEYWORD_NIL},	  {NULL, TOKEN_EOF}};
+static keyword_t keywords[] = {
+	{"and", TOK_AND},			  {"or", TOK_OR},
+	{"True", TOK_KEYWORD_TRUE}, {"False", TOK_KEYWORD_FALSE},
+	{"Nil", TOK_KEYWORD_NIL},	  {NULL, TOK_EOF}};

@@ -7,16 +7,16 @@
 
 #include "token.h"
 
-typedef struct Lexer {
+typedef  struct lexer {
 	const char *contents;
-	size_t contentsLength;
-	TokenArray *tokens;
+	size_t contents_length;
+	token_array_t *tokens;
 
 	size_t pos;
 	size_t line;
 	size_t column;
-} Lexer;
+} lexer_t;
 
-Lexer *LexerCreate(const char *contents, size_t contentsLength);
-TokenArray *LexerLex(Lexer *lexer);
-void LexerDestroy(Lexer *lexer);
+lexer_t *lexer_create(const char *contents, size_t contents_length);
+token_array_t *lexer_lex(lexer_t *lexer);
+void lexer_destroy(lexer_t *lexer);

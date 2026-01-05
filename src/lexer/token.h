@@ -6,79 +6,77 @@
 #include <stdbool.h>
 #include <stddef.h>
 
-typedef enum TokenType {
-	TOKEN_FLOAT,   // 3.14
-	TOKEN_INTEGER, // 123
-	TOKEN_STRING,  // "Hello World"
+typedef enum token_type {
+	TOK_FLOAT,   // 3.14
+	TOK_INTEGER, // 123
+	TOK_STRING,  // "Hello World"
 
-	TOKEN_IDENTIFIER, // main
+	TOK_IDENTIFIER, // main
 
-	TOKEN_SEMICOLON, // ;
-	TOKEN_COMMA,	 // ,
-	TOKEN_DOT,		 // .
+	TOK_SEMICOLON, // ;
+	TOK_COMMA,	 // ,
+	TOK_DOT,		 // .
 
-	TOKEN_EQUAL, // =
+	TOK_EQUAL, // =
 
-	TOKEN_PLUS,		// +
-	TOKEN_MINUS,	// -
-	TOKEN_ASTERISK, // *
-	TOKEN_SLASH,	// /
-	TOKEN_PERCENT,	// %
+	TOK_PLUS,		// +
+	TOK_MINUS,	// -
+	TOK_ASTERISK, // *
+	TOK_SLASH,	// /
+	TOK_PERCENT,	// %
 
-	TOKEN_BITWISE_OR,  // |
-	TOKEN_BITWISE_XOR, // ^
-	TOKEN_BITWISE_AND, // &
+	TOK_BITWISE_OR,  // |
+	TOK_BITWISE_XOR, // ^
+	TOK_BITWISE_AND, // &
 
-	TOKEN_BITWISE_SHIFT_LEFT,  // <<
-	TOKEN_BITWISE_SHIFT_RIGHT, // >>
+	TOK_BITWISE_SHIFT_LEFT,  // <<
+	TOK_BITWISE_SHIFT_RIGHT, // >>
 
-	TOKEN_EQUAL_EQUAL, // ==
-	TOKEN_NOT_EQUAL,   // !=
+	TOK_EQUAL_EQUAL, // ==
+	TOK_NOT_EQUAL,   // !=
 
-	TOKEN_LESS_THAN,		// <
-	TOKEN_GREATER_THAN,		// >
-	TOKEN_LESS_OR_EQUAL,	// <=
-	TOKEN_GREATER_OR_EQUAL, // >=
+	TOK_LESS_THAN,		// <
+	TOK_GREATER_THAN,		// >
+	TOK_LESS_OR_EQUAL,	// <=
+	TOK_GREATER_OR_EQUAL, // >=
 
-	TOKEN_AND, // && ou and
-	TOKEN_OR,  // || ou or
+	TOK_AND, // && ou and
+	TOK_OR,  // || ou or
 
-	TOKEN_LPAREN,	// (
-	TOKEN_RPAREN,	// )
-	TOKEN_LBRACE,	// {
-	TOKEN_RBRACE,	// }
-	TOKEN_LBRACKET, // [
-	TOKEN_RBRACKET, // ]
+	TOK_LPAREN,	// (
+	TOK_RPAREN,	// )
+	TOK_LBRACE,	// {
+	TOK_RBRACE,	// }
+	TOK_LBRACKET, // [
+	TOK_RBRACKET, // ]
 
-	TOKEN_KEYWORD_TRUE,	 // True
-	TOKEN_KEYWORD_FALSE, // False
+	TOK_KEYWORD_TRUE,	 // True
+	TOK_KEYWORD_FALSE, // False
 
-	TOKEN_KEYWORD_NIL, // Nil
+	TOK_KEYWORD_NIL, // Nil
 
-	TOKEN_EOF // \0
-} TokenType;
+	TOK_EOF // \0
+} token_type_t;
 
-typedef struct Token {
+typedef struct token {
 	const char *start;
 	size_t length;
-	TokenType type;
+	token_type_t type;
 
 	size_t line;
 	size_t column;
 	const char *realContent;
-} Token;
+} token_t;
 
-typedef struct TokenArray {
-	Token *tokens;
+typedef struct token_array {
+	token_t *tokens;
 	size_t count;
 	size_t cap;
-} TokenArray;
+} token_array_t;
 
-const char *TokenGetString(TokenType type);
-TokenArray *TokenArrayCreate(size_t initialCap);
-bool TokenArrayPush(TokenArray *array, Token token);
-int TokenArrayPrint(TokenArray *array);
-void TokenArrayDestroy(TokenArray *array);
-void pointToWord(const char *content, size_t line, size_t column,
-				 size_t length);
-void tokenError(Token token, const char *format, ...);
+const char *token_get_string(token_type_t type);
+token_array_t *token_array_create(size_t initialCap);
+bool token_array_push(token_array_t *array, token_t token);
+int token_array_print(token_array_t *array);
+void token_array_destroy(token_array_t *array);
+void token_error(token_t token, const char *format, ...);
